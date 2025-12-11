@@ -1,0 +1,14 @@
+<component name="DebugServers">
+  <generic-debug-target name="Generic ST-LINK S+NS" uniqueID="72c48100-f52a-4e00-a8c0-513cc2421e7c" selected="true">
+    <debugger version="1">
+      <debugger kind="GDB" isBundled="true" />
+      <env />
+    </debugger>
+    <gdbserver exe="C:\ST\STM32CubeCLT_1.19.0\STLink-gdb-server\bin\ST-LINK_gdbserver.exe" args="-p 61234 -cp C:\ST\STM32CubeCLT_1.19.0\STM32CubeProgrammer\bin --halt --apid 0 -d --frequency 8000">
+      <env />
+    </gdbserver>
+    <console port="61235" />
+    <target />
+    <connection extended-remote="false" use-custom-script="true" remote-string="tcp:localhost:61234" custom-script="echo Connecting...\n&#10;$GDBTargetCommand$&#10;echo Connected!!\n&#10;echo *********************************\n&#10;echo Loading NonSecure file...\n&#10;exec-file NonSecure/build/clion-2026.1-stm32l5-trustzone_NS.elf&#10;echo Flashing...&#10;load&#10;echo *********************************\n&#10;echo Loading Secure file...\n&#10;file Secure/build/clion-2026.1-stm32l5-trustzone_S.elf&#10;echo Flashing...\n&#10;load&#10;&#10;echo *********************************\n&#10;echo Loading NonSecure symbols file...\n&#10;add-symbol-file NonSecure/build/clion-2026.1-stm32l5-trustzone_NS.elf&#10;&#10;&#10;echo *********************************\n&#10;echo Reset\n&#10;monitor reset" warmup-ms="500" />
+  </generic-debug-target>
+</component>
