@@ -126,19 +126,21 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    static int redCounter = 0;
 
     /* -- Sample board code for User push-button in interrupt mode ---- */
-    if (BspButtonState == BUTTON_PRESSED)
-    {
-      /* Update button state */
-      BspButtonState = BUTTON_RELEASED;
       /* -- Sample board code to toggle leds ---- */
       BSP_LED_Toggle(LED_GREEN);
-      BSP_LED_Toggle(LED_RED);
-      HAL_Delay(100); //NOTE!!! Double breakpoint in HAL_Delay!
-
+      HAL_Delay(150); //NOTE!!! Double breakpoint in HAL_Delay!
+      switch (++redCounter)
+      {
+        case 6: SECURE_switchBlueLed(1);
+        break;
+        case 10: SECURE_switchBlueLed(0);
+        redCounter = 0;
+        break;
+      }
       /* ..... Perform your action ..... */
-    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

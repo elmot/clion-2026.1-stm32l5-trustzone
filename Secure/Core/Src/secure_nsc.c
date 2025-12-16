@@ -22,6 +22,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "secure_nsc.h"
+
 /** @addtogroup STM32L5xx_HAL_Examples
 
   * @{
@@ -32,8 +33,8 @@
   */
 
 /* Global variables ----------------------------------------------------------*/
-void *pSecureFaultCallback = NULL;   /* Pointer to secure fault callback in Non-secure */
-void *pSecureErrorCallback = NULL;   /* Pointer to secure error callback in Non-secure */
+void* pSecureFaultCallback = NULL; /* Pointer to secure fault callback in Non-secure */
+void* pSecureErrorCallback = NULL; /* Pointer to secure error callback in Non-secure */
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -48,24 +49,30 @@ void *pSecureErrorCallback = NULL;   /* Pointer to secure error callback in Non-
   * @param  func        pointer to non-secure function
   * @retval None
   */
-    CMSE_NS_ENTRY void SECURE_RegisterCallback(SECURE_CallbackIDTypeDef CallbackId, void *func)
+CMSE_NS_ENTRY void SECURE_RegisterCallback(SECURE_CallbackIDTypeDef CallbackId, void* func)
+{
+    if (func != NULL)
     {
-      if(func != NULL)
-      {
-        switch(CallbackId)
+        switch (CallbackId)
         {
-          case SECURE_FAULT_CB_ID:           /* SecureFault Interrupt occurred */
-          pSecureFaultCallback = func;
-          break;
-          case GTZC_ERROR_CB_ID:             /* GTZC Interrupt occurred */
-          pSecureErrorCallback = func;
-          break;
-          default:
-          /* unknown */
-          break;
+        case SECURE_FAULT_CB_ID: /* SecureFault Interrupt occurred */
+            pSecureFaultCallback = func;
+            break;
+        case GTZC_ERROR_CB_ID: /* GTZC Interrupt occurred */
+            pSecureErrorCallback = func;
+            break;
+        default:
+            /* unknown */
+            break;
         }
-      }
     }
+}
+
+__attribute__((cmse_nonsecure_entry))
+void SECURE_switchBlueLed(int state)
+{
+        HAL_GPIO_WritePin(LD_BLUE_GPIO_Port, LD_BLUE_Pin, state);
+}
 
 /**
   * @}
@@ -75,4 +82,3 @@ void *pSecureErrorCallback = NULL;   /* Pointer to secure error callback in Non-
   * @}
   */
 /* USER CODE END Non_Secure_CallLib */
-
